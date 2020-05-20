@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>Authors</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% for collectoion in object_list %}
+                    <div class="card my-1">
+                        <div class="card-header">
+                            <a href="{% url 'utils:author_profile' collectoion.user.id %}">{{ collectoion.user }}</a>
+                            <a href="{% url 'books:collection_view' collectoion.id %}">{{ collectoion.name }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

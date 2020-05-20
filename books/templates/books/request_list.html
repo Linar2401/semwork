@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Book {{ name }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% for review in reviews %}
+                    <div class="card col-3 m-2" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Book: <a href="{% url 'books:view' review.book.id %}">review.book.name</a></h5>
+                            <p class="card-text">Mark: {{review.mark}}</p>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a type="button" class="card-link btn btn-primary" href="{% url 'books:review_view' review.id %}">
+                                    View
+                                </a>
+                                <a type="button" class="card-link btn btn-success" href="{% url 'books:review_update' review.id %}">
+                                    Edit
+                                </a>
+                                <a type="button" class="card-link btn btn-danger" href="{% url 'books:review_delete' review.id %}">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

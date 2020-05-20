@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block content %}
+    ​<h2>Profile</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h3>Profile info:</h3>
+                <p>Nickname: {{ user.username }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="m-2">Books</h3>
+                <hr>
+                <div class="container-fluid">
+                    <div class="row justify-content-around">
+                        {% for book in books %}
+                            {% if forloop.counter < 7 %}
+                                <div class="card col-3 m-2" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Name: {{book.name}}</h5>
+                                        <p class="card-text">Description: {{book.description}}</p>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a type="button" class="card-link btn btn-primary" href="{% url 'books:view' book.id %}">
+                                                View
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if forloop.counter == 7 %}
+                                <div class="col-12">
+                                    <a type="button" class="card-link btn btn-danger" href="{% url 'books:list' user.id %}">
+                                        Show more
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if forloop.counter > 7 %}{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="m-2">Reviews</h3>
+                <hr>
+                <div class="container-fluid">
+                    <div class="row justify-content-around">
+                        {% if reviews %}
+                            {% for review in reviews %}
+                                {% if forloop.counter < 7 %}
+                                    <div class="card col-3 m-2" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Book: <a href="{% url 'books:view' review.book.id %}">{{ review.book.name }}</a></h5>
+                                            <h5 class="card-title">Author: <a href="">{{ review.user.username }}</a></h5>
+                                            <p class="card-text">Mark: {{review.mark}}</p>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a type="button" class="card-link btn btn-primary" href="{% url 'books:review_view' review.id %}">
+                                                    View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter == 7 %}
+                                    <div class="col-12">
+                                        <a type="button" class="card-link btn btn-danger" href="{% url 'books:review_list' user.id %}">
+                                            Show more
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter > 7 %}{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <h5>You not add any review.</h5>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="m-2">Request</h3>
+                <hr>
+                <div class="container-fluid">
+                    <div class="row justify-content-around">
+                        {% if reviews %}
+                            {% for request in requests %}
+                                {% if forloop.counter < 7 %}
+                                    <div class="card col-3 m-2" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Name: {{ request.name }}</h5>
+                                            <h5 class="card-title">Author: <a href="">{{ request.user.username }}</a></h5>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a type="button" class="card-link btn btn-primary" href="{% url 'books:request_view' request.id %}">
+                                                    View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter == 7 %}
+                                    <div class="col-12">
+                                        <a type="button" class="card-link btn btn-danger" href="{% url 'books:request_list' user.id %}">
+                                            Show more
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter > 7 %}{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <h5>Author not add any review.</h5>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="m-2">Collections</h3>
+                <hr>
+                <div class="container-fluid">
+                    <div class="row justify-content-around">
+                        {% if collections %}
+                            {% for collection in collections %}
+                                {% if forloop.counter < 7 %}
+                                    <div class="card col-3 m-2" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Name: {{ collection.name }}</h5>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a type="button" class="card-link btn btn-primary" href="{% url 'books:collection_view' collection.id %}">
+                                                    View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter == 7 %}
+                                    <div class="col-12">
+                                        <a type="button" class="card-link btn btn-danger" href="{% url 'books:collection_list' user.id %}">
+                                            Show more
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <h5>Author not add any collections.</h5>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Book {{ name }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if book_id %}
+            <dvi class="row">
+            <div class="col">
+                <a type="button" class="card-link btn btn-primary btn-lg" href="{% url 'books:view' book_id %}">
+                    Back to book
+                </a>
+            </div>
+        {% endif %}
+        </dvi>
+        <hr>
+        <div class="row">
+            {% for book in book_list %}
+                <div class="card col-3 m-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Name: {{book.name}}</h5>
+                        <p class="card-text">Description: {{book.description}}</p>
+                        <p class="card-text">Author: <a href="{% url 'utils:author_profile' book.user.id %}">{{book.user}}</a></p>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a type="button" class="card-link btn btn-primary" href="{% url 'books:view' book.id %}">
+                                View
+                            </a>
+                            {% if is_author %}
+                                <a type="button" class="card-link btn btn-success" href="{% url 'books:update' book.id %}">
+                                    Edit
+                                </a>
+                                <a type="button" class="card-link btn btn-danger" href="{% url 'books:delete' book.id %}">
+                                    Delete
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:'3' %}<div class="col-12">
+                    <hr>
+                </div>{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

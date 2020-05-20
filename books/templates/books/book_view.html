@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Book {{ name }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if object.image %}
+                <div class="col-4 "><img src="/media/{{ object.image }}" class="rounded float-left w-100">
+                </div>{% endif %}
+            <div class="col-12">
+                <h1>Name: {{ object.name }}</h1>
+                <h5>Author:</h5><a href="{% url 'utils:author_profile' object.user.id %}">{{ object.user }}</a>
+                <hr>
+                <h5>Warnings:</h5>
+                {% for warning in object.warnings.all %}
+                    <h6>{{ warning }}</h6>
+                {% endfor %}
+                <hr>
+                <h5>Genres:</h5>
+                {% for genre in object.genres.all %}
+                    <h6>{{ genre }}</h6>
+                {% endfor %}
+                <hr>
+                <h5>Rating:</h5>
+                <h6>{{ object.rating }}</h6>
+                <hr>
+                <h5>Description:</h5>
+                <p>{{ object.description }}</p>
+                <hr>
+                <h5>Download:</h5>
+                {% if object.file_fb2 or object.file_txt or object.file_epub %}
+                    {% if object.file_fb2 %}
+                        <a href="/media/{{ object.file_fb2 }}">FB2</a>
+                    {% endif %}
+                    {% if object.file_txt %}
+                        <a href="/media/{{ object.file_txt }}">TXT</a>
+                    {% endif %}
+                    {% if object.file_epub %}
+                        <a href="/media/{{ object.file_epub }}">EPUB</a>
+                    {% endif %}
+                {% endif %}
+                {% if not object.file_fb2 and not object.file_txt and not object.file_epub %}
+                    <h5>Author not add files. :(</h5>
+                {% endif %}
+                <hr>
+{#                <a type="button" class="card-link btn btn-success" href="{% url 'books:add_to' book.id %}">#}
+{#                    Add to collection#}
+{#                </a>#}
+{#                <hr>#}
+                <h5>Reviews:</h5>
+                <a type="button" class="card-link btn btn-primary" href="{% url 'books:review_list_by_book' book.id %}">
+                    All reviews
+                </a>
+                <a type="button" class="card-link btn btn-success" href="{% url 'books:review_create' book.id %}">
+                    Add own review
+                </a>
+                {% if book.request %}
+                    <hr>
+                    <h5>Request:</h5>
+                    <a href="{% url 'books:request_view' book.request.id %}">{{ book.request.name }}</a>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                <hr>
+                <h3>Comments:</h3>
+                <div id="comments">
+                    {% if book.comment_set %}
+                        {% for comment in book.comment_set.all %}
+                            <div class="card my-1">
+                                <div class="card-header">
+                                    <a href="{% url 'utils:author_profile' comment.user.id %}">{{ comment.user }}</a>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ comment.text }}</p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    {{ comment.pub_date }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                            <p>We not have comments</p>
+                    {% endif %}
+                </div>
+                {% if request.user.is_anonymous %}
+                    <p>Please Sign In or Sign Up to comment</p>
+                {% else %}
+                    <form method="post" action="{% url 'books:comment_create' book.id %}">
+                        {% csrf_token %}
+                        {{ comment_form|crispy }}
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

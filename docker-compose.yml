@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  redis:
+      image: redis
+      restart: always
+      container_name: 'demo_app_redis'
+      command: redis-server
+      ports:
+        - '6379:6379'
+  web:
+    build: .
+    command: python /semestrovka/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/semestrovka
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  celery:
+    build: .
+    container_name: 'demo_app_celery'
+    command: celery -A semestrovka worker -B
+    volumes:
+      - .:/semestrovka
+    links:
+      - redis
+    depends_on:
+      - web
+      - redis
+volumes:
+  postgres_data:

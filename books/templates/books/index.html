@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Main page</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Top Rated Books</h1>
+            </div>
+            {% for book in top_rated_books %}
+                <div class="card col-3 m-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Name: {{book.name}}</h5>
+                        <p class="card-text">Author: <a href="{% url 'utils:author_profile' book.user.id%}"> {{book.user}}</a></p>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a type="button" class="card-link btn btn-primary"
+                               href="{% url 'books:view' book.id %}">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-10">
+                <hr>
+            </div>
+            <div class="col-12">
+                <h1>Top Comment books</h1>
+            </div>
+            {% for book in top_comment_books %}
+                <div class="card col-3 m-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Name: {{book.name}}</h5>
+                        <p class="card-text">Author: <a href="{% url 'utils:author_profile' book.user.id%}"> {{book.user}}</a></p>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a type="button" class="card-link btn btn-primary"
+                               href="{% url 'books:view' book.id %}">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-10">
+                <hr>
+            </div>
+            <div class="col-12">
+                <h1>News</h1>
+            </div>
+            {% if news %}
+                {% for post in news %}
+                    <div class="card col-12 m-2" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{post.name}}</h5>
+                            <p class="card-text">{{ post.text }}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {{ post.pub_date }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <div class="col">
+                    <h4>No news</h4>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row"></div>
+    </div>
+
+{% endblock %}

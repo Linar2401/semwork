@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Add to collection</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <a type="button" class="btn btn-primary m-2" href="{% url 'books:collection_create' %}">
+                    Create new collection
+                </a>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% for collection in collections %}
+                    <div class="card my-1">
+                        <div class="card-header">
+                            <a href="{% url 'books:collection_view' collection.id %}">{{ collection.name }}</a>
+                        </div>
+                        <form action="{% url 'books:add_to_post'%}" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="hidden" name="book_id" value="{{book_pk}}">
+                            <input type="hidden" name="collection_id" value="{{collection.id}}">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

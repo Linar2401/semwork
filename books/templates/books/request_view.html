@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Book {{ name }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Name: {{ object.name }}</h1>
+                <h5>Author:</h5><a href="{% url 'utils:author_profile' object.user.id %}">{{ object.user }}</a>
+                <hr>
+                <h5>Warnings:</h5>
+                {% for warning in object.warnings.all %}
+                    <h6>{{ warning }}</h6>
+                {% endfor %}
+                <hr>
+                <h5>Genres:</h5>
+                {% for genre in object.genres.all %}
+                    <h6>{{ genre }}</h6>
+                {% endfor %}
+                <hr>
+                <h5>Rating:</h5>
+                <h6>{{ object.rating }}</h6>
+                <hr>
+                <h5>Text:</h5><p>{{ object.text }}</p>
+                <hr>
+                <h5>Books:</h5>
+                <a type="button" class="card-link btn btn-primary" href="{% url 'books:list_by_request' object.id %}">
+                    All books by these request
+                </a>
+                <a type="button" class="card-link btn btn-success" href="{% url 'books:create_by_request' object.id %}">
+                    Add book
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
